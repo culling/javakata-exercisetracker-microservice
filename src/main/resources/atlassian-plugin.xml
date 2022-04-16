@@ -20,5 +20,17 @@
 
         <context>exercisetracker-microservice</context>
     </web-resource>
+
+    <web-item key="exercisetracker-button" section="system.header/left">
+        <label>Exercise Tracker Form</label>
+        <link linkId="geneculling-javakata-exercisetracker">/plugins/servlet/exercisetracker/api/users</link>
+    </web-item>
+
+
+    <servlet key="exercisetracker-servlet" class="com.geneculling.javakata.servlet.ExerciseTrackerServlet">
+        <url-pattern>/exercisetracker/api/users</url-pattern>
+    </servlet>
+
+
     
 </atlassian-plugin>

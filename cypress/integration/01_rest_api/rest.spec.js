@@ -6,3 +6,9 @@ describe("canary", () => {
     });
 });
 
+describe("rest api", ()=>{
+    it("should not fail with User API", ()=>{
+        cy.visit("/plugins/servlet/exercisetracker/api/users");
+
+    });
+})
