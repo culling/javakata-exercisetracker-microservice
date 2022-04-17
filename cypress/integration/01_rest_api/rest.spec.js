@@ -6,9 +6,19 @@ describe("canary", () => {
     });
 });
 
-describe("rest api", ()=>{
-    it("should not fail with User API", ()=>{
+describe("rest api - GET", ()=>{
+    it("should not fail with GET page", ()=>{
         cy.visit("/plugins/servlet/exercisetracker/api/users");
 
     });
-})
+});
+
+describe("rest api - DELETE", ()=>{
+    it("should not fail with DELETE User API", ()=>{
+        cy.request({
+            method: "DELETE",
+            url:"/plugins/servlet/exercisetracker/api/users"
+        });
+
+    });
+});
