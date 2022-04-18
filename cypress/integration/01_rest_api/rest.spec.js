@@ -17,7 +17,7 @@ describe("rest api - DELETE", ()=>{
     it("should not fail with DELETE User API", ()=>{
         cy.request({
             method: "DELETE",
-            url:"/plugins/servlet/exercisetracker/api/users"
+            url:"/plugins/servlet/exercisetracker/api/users?user=key"
         });
 
     });
