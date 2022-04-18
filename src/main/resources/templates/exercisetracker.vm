@@ -1,4 +1,5 @@
-<form action="/plugins/servlet/exercisetracker/api/users" method="post">
+contextPath = $contextPath
+<form action="$contextPath/plugins/servlet/exercisetracker/api/users" method="post">
     <h3>Create a New User</h3>
     <p><code>POST /plugins/servlet/exercisetracker/api/users</code></p>
     <input id="uname" type="text" name="username" placeholder="username">
@@ -7,7 +8,7 @@
 
 <form id="exercise-form" method="post">
     <h3>Add exercises</h3>
-    <p><code>POST /plugins/servlet/exercisetracker/api/users/:_id/exercises</code></p>
+    <p><code>POST $contextPath/plugins/servlet/exercisetracker/api/users/:_id/exercises</code></p>
     <input id="uid" type="text" name=":_id" placeholder=":_id">
     <input id="desc" type="text" name="description" placeholder="description*">
     <input id="dur" type="text" name="duration" placeholder="duration* (mins.)">
