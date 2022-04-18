@@ -39,6 +39,17 @@ public class ExerciseTrackerServlet extends HttpServlet {
         response.flushBuffer();
     }
 
+
+    /**
+     * Post method
+     *
+     * User Stories
+     * + You can POST to /api/users with form data username to create a new user.
+     * + The returned response from POST /api/users with form data username will be an object with username and _id properties.
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
