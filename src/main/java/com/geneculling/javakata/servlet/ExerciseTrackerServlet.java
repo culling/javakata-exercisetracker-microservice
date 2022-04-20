@@ -28,6 +28,17 @@ public class ExerciseTrackerServlet extends HttpServlet {
         this.settingsManager = settingsManager;
     }
 
+    /**
+     * Get Method
+     *
+     * User Stories
+     * + You can make a GET request to /api/users to get a list of all users.
+     * + The GET request to /api/users returns an array.
+     * + Each element in the array returned from GET /api/users is an object literal containing a user's username and _id.
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
@@ -36,39 +47,6 @@ public class ExerciseTrackerServlet extends HttpServlet {
         String contextPath = new URL(settingsManager.getGlobalSettings().getBaseUrl()).getPath();
         map.put("contextPath", contextPath);
         renderer.render("templates/exercisetracker.vm", map, response.getWriter());
-        response.flushBuffer();
-    }
-
-
-    /**
-     * Post method
-     *
-     * User Stories
-     * + You can POST to /api/users with form data username to create a new user.
-     * + The returned response from POST /api/users with form data username will be an object with username and _id properties.
-     * @param request
-     * @param response
-     * @throws IOException
-     */
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        String value = dataStore.load(username);
-        dataStore.save(username, value);
-
-        response.setContentType("application/json");
-        response.getWriter().write("{\"post\":\"hit\"}");
-        response.flushBuffer();
-    }
-
-
-    @Override
-    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String key = request.getParameter("user");
-        dataStore.remove(key);
-
-        response.setContentType("application/json");
-        response.getWriter().write("{\"delete\":\"hit\"}");
         response.flushBuffer();
     }
 
