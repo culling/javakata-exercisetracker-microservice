@@ -4,10 +4,11 @@
   "description": "",
   "main": "null",
   "scripts": {
-    "start": "atlas-mvn clean confluence:debug",
-    "continue": "atlas-mvn confluence:debug",
     "build": "atlas-mvn package -DskipTests",
     "build:watch": "nodemon --exec npm run build",
+    "clean": "rmdir /s /q target",
+    "continue": "atlas-mvn confluence:debug",
+    "start": "atlas-mvn clean confluence:debug",
     "test": "node_modules/.bin/cypress open"
   },
   "author": "",
