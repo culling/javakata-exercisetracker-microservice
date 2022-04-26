@@ -4,18 +4,25 @@ import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
+import com.geneculling.javakata.api.Jsonable;
 import com.geneculling.javakata.impl.MemoryDataStore;
+import com.geneculling.javakata.pojo.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ExerciseTrackerApiServlet extends HttpServlet {
 
+    private final Gson GSON = new Gson();
     private final TemplateRenderer renderer;
     private final SettingsManager settingsManager;
     DataStore dataStore = new MemoryDataStore(new HashMap<String, String>(){{
@@ -57,12 +64,15 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-        response.getWriter().write("" +
-                "     * User Stories\n" +
-                "     * + You can make a GET request to /api/users to get a list of all users.\n" +
-                "     * + The GET request to /api/users returns an array.\n" +
-                "     * + Each element in the array returned from GET /api/users is an object literal containing a user's username and _id.\n");
+//        response.setContentType("text/html");
+//        response.getWriter().write("" +
+//                "     * User Stories\n" +
+//                "     * + You can make a GET request to /api/users to get a list of all users.\n" +
+//                "     * + The GET request to /api/users returns an array.\n" +
+//                "     * + Each element in the array returned from GET /api/users is an object literal containing a user's username and _id.\n");
+        response.setContentType("application/json");
+        JsonElement json = ((Jsonable) dataStore).getJson();
+        response.getWriter().write(json.getAsString());
         response.flushBuffer();
     }
 
@@ -84,10 +94,19 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String value = dataStore.load(username);
+        if(value == null){
+            value = (new User(username))
+                    .getJson()
+                    .getAsString();
+        }
         dataStore.save(username, value);
 
         response.setContentType("application/json");
-        response.getWriter().write("{\"post\":\"hit\"}");
+        String json = ((Jsonable) dataStore).getJson().toString();
+        Writer writer = response.getWriter();
+//        writer.write("[");
+        writer.write(json);
+//        writer.write("]");
         response.flushBuffer();
     }
 
@@ -101,8 +120,6 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
         response.getWriter().write("{\"delete\":\"hit\"}");
         response.flushBuffer();
     }
-
-
 
 
 }
