@@ -29,15 +29,7 @@ public class ExerciseTrackerServlet extends HttpServlet {
     }
 
     /**
-     * Get Method
-     *
-     * User Stories
-     * + You can make a GET request to /api/users to get a list of all users.
-     * + The GET request to /api/users returns an array.
-     * + Each element in the array returned from GET /api/users is an object literal containing a user's username and _id.
-     * @param request
-     * @param response
-     * @throws IOException
+     * Show exercise tracker form
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
