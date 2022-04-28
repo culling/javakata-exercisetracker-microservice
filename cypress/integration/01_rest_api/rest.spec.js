@@ -8,13 +8,13 @@ describe("canary", () => {
 
 describe("rest api - GET", ()=>{
     it("should not fail with GET page", ()=>{
-        cy.visit("/plugins/servlet/exercisetracker/api/users");
-
+        cy.request("/plugins/servlet/exercisetracker/api/users");
     });
 });
 
+
 describe("rest api - DELETE", ()=>{
-    it("should not fail with DELETE User API", ()=>{
+    it.skip("NOT IMPLEMENTED - should not fail with DELETE User API", ()=>{
         cy.request({
             method: "DELETE",
             url:"/plugins/servlet/exercisetracker/api/users?user=key"
