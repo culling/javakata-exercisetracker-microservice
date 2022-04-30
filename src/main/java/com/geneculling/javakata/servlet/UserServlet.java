@@ -5,6 +5,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.impl.MemoryDataStore;
+import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.pojo.UserId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,8 +25,6 @@ public class UserServlet extends HttpServlet {
     private final TemplateRenderer renderer;
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
-
-
 
     DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
@@ -100,33 +99,28 @@ public class UserServlet extends HttpServlet {
             response.sendError(400, "username is invalid"); // Send not implemented error
         }
 
-        UserId user = new UserId(username);
-
-        String loadedJson = dataStore.load(USER_IDS_KEY);
-        List<UserId> list = new ArrayList<>();
-        if(loadedJson != null){
-            list = GSON.fromJson(loadedJson, USER_LIST_CLASS_TOKEN);
-        }
-        list.add(user);
-        String updatedJson = GSON.toJson(list);
-        dataStore.save(USER_IDS_KEY, updatedJson);
+        UserId userId = new UserId(username);
+        DataStoreUserIDUtils.saveUserId(dataStore, USER_IDS_KEY, userId);
+        String json = dataStore.load(USER_IDS_KEY);
 
         response.setContentType("application/json");
         Writer writer = response.getWriter();
-        writer.write(updatedJson);
+        writer.write(json);
         response.flushBuffer();
     }
 
-
     @Override
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String key = request.getParameter("user");
-        dataStore.remove(key);
+        String username = request.getParameter("username");
+        if(username == null){
+            response.sendError(400, "username is invalid");
+        }
 
-        response.sendError(501); // Send not implemented error
+        DataStoreUserIDUtils.removeUserIdByUsername(dataStore, USER_IDS_KEY, username);
+        String json = dataStore.load(USER_IDS_KEY);
 
         response.setContentType("application/json");
-        response.getWriter().write("{\"delete\":\"hit\"}");
+        response.getWriter().write(json);
         response.flushBuffer();
     }
 

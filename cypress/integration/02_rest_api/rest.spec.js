@@ -26,7 +26,7 @@ describe("rest api - POST", ()=>{
 });
 
 describe("rest api - DELETE", ()=>{
-    it.skip("NOT IMPLEMENTED - should not fail with DELETE User API", ()=>{
+    it("should not fail with DELETE User API", ()=>{
         cy.request({
             method: "POST",
             url: "/plugins/servlet/exercisetracker/api/users",
@@ -38,7 +38,8 @@ describe("rest api - DELETE", ()=>{
 
         cy.request({
             method: "DELETE",
-            url:"/plugins/servlet/exercisetracker/api/users?user="
+            form: true,
+            url:"/plugins/servlet/exercisetracker/api/users?username=userToBeDeleted"
         });
 
     });
