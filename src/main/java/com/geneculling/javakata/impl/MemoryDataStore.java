@@ -2,7 +2,6 @@ package com.geneculling.javakata.impl;
 
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.api.Jsonable;
-import com.geneculling.javakata.pojo.User;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
