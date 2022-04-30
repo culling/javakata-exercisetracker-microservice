@@ -14,14 +14,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExerciseTrackerServlet extends HttpServlet {
+public class FormServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     TemplateRenderer renderer;
     DataStore dataStore = new MemoryDataStore(new HashMap<String, String>(){{
         put("key", "value");
     }});
 
-    ExerciseTrackerServlet(
+    FormServlet(
             @ComponentImport TemplateRenderer renderer,
             @ComponentImport SettingsManager settingsManager){
         this.renderer = renderer;
