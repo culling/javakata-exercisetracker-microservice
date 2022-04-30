@@ -3,7 +3,7 @@ contextPath = $contextPath
     <h3>Create a New User</h3>
     <p><code>POST /plugins/servlet/exercisetracker/api/users</code></p>
     <input id="uname" type="text" name="username" placeholder="username">
-    <input type="submit" value="Submit">
+    <input id="createUser" type="submit" value="Submit">
 </form>
 
 <form id="exercise-form" method="post">
