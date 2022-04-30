@@ -1,3 +1,4 @@
 {
-    "baseUrl": "http://localhost:1990/confluence"
+    "baseUrl": "http://localhost:1990/confluence", 
+    "chromeWebSecurity": false 
 }
