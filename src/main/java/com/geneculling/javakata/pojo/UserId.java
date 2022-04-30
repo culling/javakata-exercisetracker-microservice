@@ -24,4 +24,12 @@ public class UserId {
         this._id = _id;
     }
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String get_id() {
+        return _id;
+    }
 }
