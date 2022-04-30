@@ -5,37 +5,23 @@ import com.google.gson.JsonElement;
 
 import java.util.UUID;
 
-public class User implements Jsonable{
-    private static final Gson GSON = new Gson();
+public class UserId {
     private String username;
     private String _id;
 
-    public User(String username) {
+    public UserId(String username) {
         this.username = username;
         this._id = UUID.randomUUID().toString();
     }
 
-    public User(String username, UUID _id) {
+    public UserId(String username, UUID _id) {
         this.username = username;
         this._id = _id.toString();
     }
 
-    public User(String username, String _id) {
+    public UserId(String username, String _id) {
         this.username = username;
         this._id = _id;
-    }
-
-    public String get_id() {
-        return _id.toString();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public JsonElement getJson() {
-        return GSON.toJsonTree( GSON.toJson(this));
     }
 
 }
