@@ -26,16 +26,18 @@
         <link linkId="geneculling-javakata-exercisetracker">/plugins/servlet/exercisetracker</link>
     </web-item>
 
-    <servlet key="exercisetracker-form-servlet" class="com.geneculling.javakata.servlet.FormServlet">
-        <url-pattern>/exercisetracker</url-pattern>
+    <servlet key="exercisetrackerapi-exercise-servlet" class="com.geneculling.javakata.servlet.ExerciseServlet">
+        <url-pattern>/exercisetracker/api/users/*</url-pattern>
     </servlet>
 
     <servlet key="exercisetrackerapi-user-servlet" class="com.geneculling.javakata.servlet.UserServlet">
         <url-pattern>/exercisetracker/api/users</url-pattern>
     </servlet>
 
-    <servlet key="exercisetrackerapi-exercise-servlet" class="com.geneculling.javakata.servlet.ExerciseServlet">
-        <url-pattern>/exercisetracker/api/users/*</url-pattern>
+    <servlet key="exercisetracker-form-servlet" class="com.geneculling.javakata.servlet.FormServlet">
+        <url-pattern>/exercisetracker</url-pattern>
     </servlet>
+
+
 
 </atlassian-plugin>

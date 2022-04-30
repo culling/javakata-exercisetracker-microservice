@@ -62,8 +62,8 @@ public class ExerciseServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendError(501); // Send not implemented error
 
+        
         response.setContentType("application/json");
         response.getWriter().write("{\"post\":\"hit\"}");
         response.flushBuffer();
