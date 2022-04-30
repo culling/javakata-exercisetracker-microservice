@@ -5,28 +5,37 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.impl.MemoryDataStore;
-import com.geneculling.javakata.pojo.User;
+import com.geneculling.javakata.pojo.UserId;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class ExerciseTrackerApiServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     private final TemplateRenderer renderer;
     private final SettingsManager settingsManager;
+    private final static Gson GSON = new Gson();
+
 
 
     DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
     }});
     private final static String USERS_KEY = "users";
+    private final static String USER_IDS_KEY = "userIds";
+    private final static Type USER_LIST_CLASS_TOKEN = new TypeToken<List<UserId>>(){}.getType();
 
 
-    ExerciseTrackerApiServlet(
+    UserServlet(
             @ComponentImport TemplateRenderer renderer,
             @ComponentImport SettingsManager settingsManager) {
         this.renderer = renderer;
@@ -60,7 +69,12 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
-        String json = dataStore.loadJsonList(USERS_KEY);
+        List<UserId> list = new ArrayList<>();
+        String json = dataStore.load(USER_IDS_KEY);
+        if(json != null){
+            list = GSON.fromJson(json, USER_LIST_CLASS_TOKEN);
+        }
+        json = GSON.toJson(list);
         response.getWriter().write(json);
         response.flushBuffer();
     }
@@ -82,17 +96,24 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
+        if(username == null){
+            response.sendError(400, "username is invalid"); // Send not implemented error
+        }
 
-        String usersListKey = "users";
-        String valueToAddToList = new User(username)
-                .getJson()
-                .getAsString();
-        dataStore.saveToList(usersListKey, valueToAddToList);
-        String json = dataStore.loadJsonList(usersListKey);
+        UserId user = new UserId(username);
+
+        String loadedJson = dataStore.load(USER_IDS_KEY);
+        List<UserId> list = new ArrayList<>();
+        if(loadedJson != null){
+            list = GSON.fromJson(loadedJson, USER_LIST_CLASS_TOKEN);
+        }
+        list.add(user);
+        String updatedJson = GSON.toJson(list);
+        dataStore.save(USER_IDS_KEY, updatedJson);
 
         response.setContentType("application/json");
         Writer writer = response.getWriter();
-        writer.write(json);
+        writer.write(updatedJson);
         response.flushBuffer();
     }
 
@@ -103,7 +124,6 @@ public class ExerciseTrackerApiServlet extends HttpServlet {
         dataStore.remove(key);
 
         response.sendError(501); // Send not implemented error
-
 
         response.setContentType("application/json");
         response.getWriter().write("{\"delete\":\"hit\"}");
