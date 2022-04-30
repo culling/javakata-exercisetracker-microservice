@@ -26,15 +26,15 @@
         <link linkId="geneculling-javakata-exercisetracker">/plugins/servlet/exercisetracker</link>
     </web-item>
 
-    <servlet key="exercisetracker-servlet" class="com.geneculling.javakata.servlet.FormServlet">
+    <servlet key="exercisetracker-form-servlet" class="com.geneculling.javakata.servlet.FormServlet">
         <url-pattern>/exercisetracker</url-pattern>
     </servlet>
 
-    <servlet key="exercisetrackerapi-servlet" class="com.geneculling.javakata.servlet.UserServlet">
+    <servlet key="exercisetrackerapi-user-servlet" class="com.geneculling.javakata.servlet.UserServlet">
         <url-pattern>/exercisetracker/api/users</url-pattern>
     </servlet>
 
-    <servlet key="exercisetrackerapi-servlet" class="com.geneculling.javakata.servlet.UserServlet">
+    <servlet key="exercisetrackerapi-exercise-servlet" class="com.geneculling.javakata.servlet.ExerciseServlet">
         <url-pattern>/exercisetracker/api/users/*</url-pattern>
     </servlet>
 
