@@ -4,7 +4,10 @@ import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
+import com.geneculling.javakata.impl.DataStoreExerciseUtils;
+import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.impl.MemoryDataStore;
+import com.geneculling.javakata.pojo.Exercise;
 import com.geneculling.javakata.pojo.UserId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +30,7 @@ public class ExerciseServlet extends HttpServlet {
     DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
     }});
-    private final static String USERS_KEY = "users";
-    private final static String USER_IDS_KEY = "userIds";
+    private final static String EXERCISE_KEY = "exercises";
     private final static Type USER_LIST_CLASS_TOKEN = new TypeToken<List<UserId>>(){}.getType();
 
 
@@ -62,10 +65,31 @@ public class ExerciseServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter(":_id");
+        if(id == null){
+            response.sendError(400, "id is invalid");
+        }
 
+        String description = request.getParameter("description");
+        if(description == null){
+            response.sendError(400, "description is invalid");
+        }
+
+        String duration = request.getParameter("duration");
+        if(description == null){
+            response.sendError(400, "duration is invalid");
+        }
+
+        String date = request.getParameter("date");
         
+        Exercise exercise = new Exercise(id, description, duration);
+        DataStoreExerciseUtils.saveExercise(dataStore, EXERCISE_KEY, exercise);
+
+        String json = dataStore.load(EXERCISE_KEY);
+
         response.setContentType("application/json");
-        response.getWriter().write("{\"post\":\"hit\"}");
+        Writer writer = response.getWriter();
+        writer.write(json);
         response.flushBuffer();
     }
 
