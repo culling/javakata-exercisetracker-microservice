@@ -27,7 +27,7 @@
     </web-item>
 
     <servlet key="exercisetrackerapi-exercise-servlet" class="com.geneculling.javakata.servlet.ExerciseServlet">
-        <url-pattern>/exercisetracker/api/users/*</url-pattern>
+        <url-pattern>/exercisetracker/api/users/*/exercises</url-pattern>
     </servlet>
 
     <servlet key="exercisetrackerapi-user-servlet" class="com.geneculling.javakata.servlet.UserServlet">

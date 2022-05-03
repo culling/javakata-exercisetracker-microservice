@@ -6,7 +6,7 @@ contextPath = $contextPath
     <input id="createUser" type="submit" value="Submit">
 </form>
 
-<form action="$contextPath/plugins/servlet/exercisetracker/api/users/:_id/exercises" id="exercise-form" method="post">
+<form id="exercise-form" method="post">
     <h3>Add exercises</h3>
     <p><code>POST $contextPath/plugins/servlet/exercisetracker/api/users/:_id/exercises</code></p>
     <input id="uid" type="text" name=":_id" placeholder=":_id">
@@ -15,3 +15,13 @@ contextPath = $contextPath
     <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)">
     <input type="submit" value="Submit">
 </form>
+
+<script>
+    const exerciseForm = document.getElementById("exercise-form");
+    exerciseForm.addEventListener("submit", () => {
+    const userId = document.getElementById("uid").value;
+    exerciseForm.action = `$contextPath/plugins/servlet/exercisetracker/api/users/${userId}/exercises`;
+
+    exerciseForm.submit();
+    });
+</script>

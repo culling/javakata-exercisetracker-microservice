@@ -18,4 +18,9 @@ public class Exercise {
         this.duration = duration;
         this.date = date;
     }
+
+    public String getId() {
+        return id;
+    }
+
 }
