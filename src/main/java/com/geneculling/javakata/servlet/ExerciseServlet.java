@@ -5,6 +5,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.impl.DataStoreExerciseUtils;
+import com.geneculling.javakata.impl.DataStoreFactory;
 import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.impl.MemoryDataStore;
 import com.geneculling.javakata.pojo.Exercise;
@@ -26,9 +27,11 @@ public class ExerciseServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    private final static DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
+    private final static DataStore dataStore = new DataStoreFactory(
+            (DataStore) new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
-    }});
+    }})).getDataStore();
+
     private final static String EXERCISE_KEY = "exercises";
     private final static String USER_IDS_KEY = "userIds";
 

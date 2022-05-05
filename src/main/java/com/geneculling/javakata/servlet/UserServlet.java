@@ -4,6 +4,7 @@ import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
+import com.geneculling.javakata.impl.DataStoreFactory;
 import com.geneculling.javakata.impl.MemoryDataStore;
 import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.pojo.UserId;
@@ -26,9 +27,11 @@ public class UserServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    private final static DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
-        put("key", "value");
-    }});
+    private final static DataStore dataStore = new DataStoreFactory(
+            (DataStore) new MemoryDataStore(new HashMap<String, String>() {{
+                put("key", "value");
+            }})).getDataStore();
+
     private final static String USERS_KEY = "users";
     private final static String USER_IDS_KEY = "userIds";
     private final static Type USER_LIST_CLASS_TOKEN = new TypeToken<List<UserId>>(){}.getType();
