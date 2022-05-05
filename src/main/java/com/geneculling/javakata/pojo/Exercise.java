@@ -2,17 +2,32 @@ package com.geneculling.javakata.pojo;
 
 import java.util.Date;
 
+
+/**
+ * JSON for object
+ * {
+ *     username: "fcc_test",
+ *     description: "test",
+ *     duration: 60,
+ *     date: "Mon Jan 01 1990",
+ *     _id: "5fb5853f734231456ccb3b05"
+ * }
+ */
 public class Exercise {
     private String id;
     private String description;
     private String duration;
     private Date date;
+    private String username;
 
-    public Exercise(String id, String description, String duration) {
-        this(id, description, duration, new Date());
+    //    FIXME: Make constructor take username
+    public Exercise(String id, String username, String description, String duration) {
+        this(id, username, description, duration, new Date());
     }
 
-   public Exercise(String id, String description, String duration, Date date) {
+    //    FIXME: Make constructor take username
+    public Exercise(String id, String username, String description, String duration, Date date) {
+        this.username = username;
         this.id = id;
         this.description = description;
         this.duration = duration;

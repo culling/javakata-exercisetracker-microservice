@@ -27,11 +27,14 @@ public class DataStoreUserIDUtils {
     }
 
     public static void removeUserIdByUsername(DataStore dataStore, String dataStoreKey, String username) {
-        String id = getUserIdByUsername(dataStore, dataStoreKey, username);
-        if(id == null){
+        UserId user = getUserIdByUsername(dataStore, dataStoreKey, username);
+        if(user == null){
             return;
         }
-        removeUserIdById(dataStore, dataStoreKey, id);
+        if(user.get_id() == null){
+            return;
+        }
+        removeUserIdById(dataStore, dataStoreKey, user.get_id());
     }
 
     public static void removeUserIdById(DataStore dataStore, String dataStoreKey, String id) {
@@ -43,7 +46,7 @@ public class DataStoreUserIDUtils {
         dataStore.save(dataStoreKey, updatedJson);
     }
 
-    public static String getUserIdByUsername(DataStore dataStore, String dataStoreKey, String username){
+    public static UserId getUserIdByUsername(DataStore dataStore, String dataStoreKey, String username){
         List<UserId> list = getUserIds(dataStore, dataStoreKey);
         List<UserId> filteredList = list.stream()
                 .filter(user -> user.getUsername().equals(username))
@@ -52,9 +55,20 @@ public class DataStoreUserIDUtils {
             return null;
         }
         UserId user = filteredList.get(0);
-        return user.get_id();
+        return user;
     }
 
+    public static UserId getUserIdById(DataStore dataStore, String dataStoreKey, String id){
+        List<UserId> list = getUserIds(dataStore, dataStoreKey);
+        List<UserId> filteredList = list.stream()
+                .filter(user -> user.get_id().equals(id))
+                .collect(Collectors.toList());
+        if(filteredList.isEmpty()){
+            return null;
+        }
+        UserId user = filteredList.get(0);
+        return user;
+    }
 
     /**************************
      * PRIVATE METHODS

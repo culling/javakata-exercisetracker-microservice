@@ -28,8 +28,8 @@ public class DataStoreUserTest {
         UserId user1 = new UserId("testuser1", "aa");
         saveUserId(dataStore, dataStoreKey, user1);
 
-        String id = getUserIdByUsername(dataStore, dataStoreKey, "testuser1");
-        assertEquals("aa", id);
+        UserId returnedUser = getUserIdByUsername(dataStore, dataStoreKey, "testuser1");
+        assertEquals("aa", returnedUser.get_id());
     }
 
 

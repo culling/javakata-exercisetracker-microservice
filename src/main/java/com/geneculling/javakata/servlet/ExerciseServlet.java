@@ -11,14 +11,12 @@ import com.geneculling.javakata.pojo.Exercise;
 import com.geneculling.javakata.pojo.UserId;
 import com.geneculling.javakata.utils.UrlUtils;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class ExerciseServlet extends HttpServlet {
         put("key", "value");
     }});
     private final static String EXERCISE_KEY = "exercises";
-
+    private final static String USER_IDS_KEY = "userIds";
 
     ExerciseServlet(
             @ComponentImport TemplateRenderer renderer,
@@ -88,8 +86,13 @@ public class ExerciseServlet extends HttpServlet {
         }
 
         String date = request.getParameter("date");
-        
-        Exercise exercise = new Exercise(id, description, duration);
+        UserId userId = DataStoreUserIDUtils.getUserIdById(dataStore, USER_IDS_KEY, id);
+        if(userId == null){
+            response.sendError(400, "User with id: \"" + id + "\" not found");
+            return;
+        }
+        String username = userId.getUsername();
+        Exercise exercise = new Exercise(id, username, description, duration);
         DataStoreExerciseUtils.saveExercise(dataStore, EXERCISE_KEY, exercise);
 
         String json = dataStore.load(EXERCISE_KEY);
