@@ -13,7 +13,7 @@ describe("form", ()=>{
         cy.get('#createUser').click();
     });
 
-    it("NOT IMPLEMENTED - should create an exercise log when submitted", ()=>{
+    it("should create an exercise log when submitted", ()=>{
         cy.visit("/plugins/servlet/exercisetracker");
         cy.get('#uid').type("uid");
         cy.get('#desc').type("description");
