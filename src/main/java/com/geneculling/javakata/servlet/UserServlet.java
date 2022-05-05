@@ -26,7 +26,7 @@ public class UserServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
+    private final static DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
     }});
     private final static String USERS_KEY = "users";
