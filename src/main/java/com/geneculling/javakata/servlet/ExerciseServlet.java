@@ -9,6 +9,7 @@ import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.impl.MemoryDataStore;
 import com.geneculling.javakata.pojo.Exercise;
 import com.geneculling.javakata.pojo.UserId;
+import com.geneculling.javakata.utils.UrlUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,11 +28,10 @@ public class ExerciseServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
+    private final static DataStore dataStore = new MemoryDataStore(new HashMap<String, String>() {{
         put("key", "value");
     }});
     private final static String EXERCISE_KEY = "exercises";
-    private final static Type USER_LIST_CLASS_TOKEN = new TypeToken<List<UserId>>(){}.getType();
 
 
     ExerciseServlet(
@@ -52,10 +52,17 @@ public class ExerciseServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendError(501); // Send not implemented error
+        String pathInfo = request.getPathInfo();
+        String id = UrlUtils.getPathSection(pathInfo, -2);
+
+        List<Exercise> exercises = DataStoreExerciseUtils.getExercisesById(dataStore, EXERCISE_KEY, id);
+        String json = "[]";
+        if(exercises != null){
+            json = GSON.toJson(exercises);
+        }
 
         response.setContentType("application/json");
-        response.getWriter().write("{\"get\":\"hit\"}");
+        response.getWriter().write(json);
         response.flushBuffer();
     }
 
