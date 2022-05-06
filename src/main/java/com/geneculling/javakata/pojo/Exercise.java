@@ -20,13 +20,13 @@ public class Exercise {
 
     private String _id;
     private String description;
-    private String duration;
+    private long duration;
     private String date;
     private String username;
 
 
 
-    public Exercise(String _id, String username, String description, String duration, String date) {
+    public Exercise(String _id, String username, String description, long duration, String date) {
         this.username = username;
         this._id = _id;
         this.description = description;
@@ -45,7 +45,7 @@ public class Exercise {
         return description;
     }
 
-    public String getDuration() {
+    public long getDuration() {
         return duration;
     }
 

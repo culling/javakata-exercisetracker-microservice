@@ -22,15 +22,6 @@ describe("canary", () => {
     });
 });
 
-describe("Unimplemented Use Cases", () => {
-    it(`A request to a user's log GET /api/users/:_id/logs returns a user object with a count property representing the + number of exercises that belong to that user.`);
-    it(`A GET request to /api/users/:id/logs will return the user object with a log array of all the exercises added.`);
-    it(`Each item in the log array that is returned from GET /api/users/:id/logs is an object that should have a description, + duration, and date properties.`);
-    it(`The description property of any object in the log array that is returned from GET /api/users/:id/logs should be a + string.`);
-    it(`The duration property of any object in the log array that is returned from GET /api/users/:id/logs should be a number.`);
-    it(`The date property of any object in the log array that is returned from GET /api/users/:id/logs should be a string.`);
-});
-
 describe("/api/users/:_id/logs GET", () => {
     before("clear all users", () => {
         clearUsers();
@@ -71,9 +62,11 @@ describe("/api/users/:_id/logs GET", () => {
                 expect(log.count, "exercise count").to.equal(1);
                 expect(Array.isArray(log.exercises)).to.be.true;
                 expect(log.exercises.length, "exercises returned").to.equal(1);
+                const exercise = log.exercises[0];
+                expect( typeof (exercise.duration)).to.equal("number");
+                expect( typeof (exercise.description)).to.equal("string");
+                expect( typeof (exercise.date)).to.equal("string");
             });
         })
     });
-
-
 })

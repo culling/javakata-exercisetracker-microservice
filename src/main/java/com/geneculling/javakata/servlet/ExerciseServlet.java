@@ -45,10 +45,10 @@ public class ExerciseServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter(":_id");
         String description = request.getParameter("description");
-        String duration = request.getParameter("duration");
+        String durationString = request.getParameter("duration");
         String date = request.getParameter("date");
 
-        if (invalidParameter(response, id, description, duration, date)){
+        if (invalidParameter(response, id, description, durationString, date)){
             return;
         }
 
@@ -59,6 +59,7 @@ public class ExerciseServlet extends HttpServlet {
         }
 
         String username = userId.getUsername();
+        long duration = Long.parseLong(durationString);
         Exercise exercise = new Exercise(id, username, description, duration, date);
         DataStoreExerciseUtils.saveExercise(dataStore, EXERCISE_KEY, exercise);
 
