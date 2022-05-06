@@ -1,5 +1,6 @@
 package com.geneculling.javakata.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +20,11 @@ public class Log {
     private String username;
     private long count;
     private String _id;
-    private List<Exercise> exerciseList;
+    private List<Exercise> exercises = new ArrayList<>();
     public Log(UserId userId, List<Exercise> exerciseList){
         this.username = userId.getUsername();
         this._id = userId.get_id();
         this.count = exerciseList.size();
-        this.exerciseList = exerciseList;
+        this.exercises = exerciseList;
     }
 }

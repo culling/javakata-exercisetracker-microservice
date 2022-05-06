@@ -32,9 +32,6 @@ public class DataStoreExerciseUtils {
         List<Exercise> filteredList = list.stream()
                 .filter(exercise -> exercise.getId().equals(id))
                 .collect(Collectors.toList());
-        if(filteredList.isEmpty()){
-            return null;
-        }
         return filteredList;
     }
 

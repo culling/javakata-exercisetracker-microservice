@@ -57,9 +57,12 @@ describe("/api/users/:_id/logs GET", () => {
         const username = "myUserOne";
         getNewUserId(username).then(id => {
             cy.request(`/plugins/servlet/exercisetracker/api/users/${id}/logs`).then(response => {
-                const userLog = response.body;
-                expect(Array.isArray(userLog)).to.be.true;
-                expect(userLog.length).to.equal(0);
+                const log = response.body;
+                expect(log.username, "username").to.equal(username);
+                expect(log._id, "user id").to.equal(id);
+                expect(log.count, "exercise count").to.equal(0);
+                expect(Array.isArray(log.exercises)).to.be.true;
+                expect(log.exercises.length).to.equal(0);
             });
         })
     });
@@ -79,11 +82,12 @@ describe("/api/users/:_id/logs GET", () => {
                 }
             });
             cy.request(`/plugins/servlet/exercisetracker/api/users/${id}/logs`).then(response => {
-                const exerciseLog = response.body;
-                expect(Array.isArray(exerciseLog), "exercise log is array").to.be.true;
-
-                const filteredLog = exerciseLog.filter(exercise => exercise.id == id);
-                expect(exerciseLog.length, "exercises returned").to.equal(1);
+                const log = response.body;
+                expect(log.username, "username").to.equal(username);
+                expect(log._id, "user id").to.equal(id);
+                expect(log.count, "exercise count").to.equal(1);
+                expect(Array.isArray(log.exercises)).to.be.true;
+                expect(log.exercises.length, "exercises returned").to.equal(1);
             });
         })
     });

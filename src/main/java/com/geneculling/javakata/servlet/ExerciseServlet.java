@@ -9,6 +9,7 @@ import com.geneculling.javakata.impl.DataStoreFactory;
 import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.impl.MemoryDataStore;
 import com.geneculling.javakata.pojo.Exercise;
+import com.geneculling.javakata.pojo.Log;
 import com.geneculling.javakata.pojo.UserId;
 import com.geneculling.javakata.utils.UrlUtils;
 import com.google.gson.Gson;
@@ -57,10 +58,13 @@ public class ExerciseServlet extends HttpServlet {
         String id = UrlUtils.getPathSection(pathInfo, -2);
 
         List<Exercise> exercises = DataStoreExerciseUtils.getExercisesById(dataStore, EXERCISE_KEY, id);
-        String json = "[]";
-        if(exercises != null){
-            json = GSON.toJson(exercises);
+        UserId userId = DataStoreUserIDUtils.getUserIdById(dataStore, USER_IDS_KEY, id);
+        if(userId == null){
+            response.sendError(400, "User with id: " + id + " does not exist");
+            return;
         }
+        Log log = new Log(userId, exercises);
+        String json = GSON.toJson(log);
 
         response.setContentType("application/json");
         response.getWriter().write(json);
@@ -84,10 +88,11 @@ public class ExerciseServlet extends HttpServlet {
         }
 
         String duration = request.getParameter("duration");
-        if(description == null){
+        if(duration == null){
             response.sendError(400, "duration is invalid");
         }
 
+//        TODO: Check Date Parameter and use Date parameter for logs
         String date = request.getParameter("date");
         UserId userId = DataStoreUserIDUtils.getUserIdById(dataStore, USER_IDS_KEY, id);
         if(userId == null){
