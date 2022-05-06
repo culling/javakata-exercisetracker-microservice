@@ -11,8 +11,10 @@ import com.geneculling.javakata.impl.DataStoreUserIDUtils;
 import com.geneculling.javakata.pojo.Exercise;
 import com.geneculling.javakata.pojo.Log;
 import com.geneculling.javakata.pojo.UserId;
+import com.geneculling.javakata.utils.ExerciseValidator;
 import com.geneculling.javakata.utils.UrlUtils;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -78,20 +80,27 @@ public class ExerciseServlet extends HttpServlet {
         String id = request.getParameter(":_id");
         if(id == null){
             response.sendError(400, "id is invalid");
+            return;
         }
 
         String description = request.getParameter("description");
         if(description == null){
             response.sendError(400, "description is invalid");
+            return;
         }
 
         String duration = request.getParameter("duration");
-        if(duration == null){
+        if(! ExerciseValidator.isValidDuration(duration)){
             response.sendError(400, "duration is invalid");
+            return;
         }
 
 //        TODO: Check Date Parameter and use Date parameter for logs
         String date = request.getParameter("date");
+        if(! ExerciseValidator.isValidDate(date)) {
+            response.sendError(400, "date is invalid");
+            return;
+        }
 
         UserId userId = DataStoreUserIDUtils.getUserIdById(dataStore, USER_IDS_KEY, id);
         if(userId == null){
@@ -100,7 +109,7 @@ public class ExerciseServlet extends HttpServlet {
         }
 
         String username = userId.getUsername();
-        Exercise exercise = new Exercise(id, username, description, duration);
+        Exercise exercise = new Exercise(id, username, description, duration, date);
         DataStoreExerciseUtils.saveExercise(dataStore, EXERCISE_KEY, exercise);
 
         String json = GSON.toJson(exercise);

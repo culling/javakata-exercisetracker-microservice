@@ -60,7 +60,7 @@ describe("/api/users/:_id/logs GET", () => {
                 body: {
                     ":_id": id,
                     "description": "coding",
-                    "duration": "3 hr",
+                    "duration": "3",
                     "date": ""
                 }
             });

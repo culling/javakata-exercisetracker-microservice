@@ -21,8 +21,8 @@ describe("form", () => {
             cy.visit("/plugins/servlet/exercisetracker");
             cy.get('#uid').type(id);
             cy.get('#desc').type("description");
-            cy.get('#dur').type("1 minute");
-            cy.get('#date').type("1/1/2022");
+            cy.get('#dur').type("120");
+            cy.get('#date').type("2022 02 07");
             cy.get('#exercise-form > [type="submit"]').click();
         });
     });

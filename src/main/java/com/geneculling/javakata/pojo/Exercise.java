@@ -1,5 +1,7 @@
 package com.geneculling.javakata.pojo;
 
+import org.apache.commons.lang3.StringUtils;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -14,21 +16,24 @@ import java.util.Date;
  * }
  */
 public class Exercise {
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy MM dd");
+
     private String _id;
     private String description;
     private String duration;
-    private Date date;
+    private String date;
     private String username;
 
-    public Exercise(String _id, String username, String description, String duration) {
-        this(_id, username, description, duration, new Date());
-    }
 
-    public Exercise(String _id, String username, String description, String duration, Date date) {
+
+    public Exercise(String _id, String username, String description, String duration, String date) {
         this.username = username;
         this._id = _id;
         this.description = description;
         this.duration = duration;
+        if(StringUtils.isBlank(date)){
+            date = DATE_FORMAT.format(new Date());
+        }
         this.date = date;
     }
 
@@ -44,7 +49,7 @@ public class Exercise {
         return duration;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 }
