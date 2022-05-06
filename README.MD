@@ -37,21 +37,41 @@ Hint: For the date property, the toDateString method of the Date API can be used
 
 
 # Kata Requirements
-+ You can POST to /api/users with form data username to create a new user.
-+ The returned response from POST /api/users with form data username will be an object with username and _id properties.
-+ You can make a GET request to /api/users to get a list of all users.
-+ The GET request to /api/users returns an array.
-+ Each element in the array returned from GET /api/users is an object literal containing a user's username and _id.
-+ You can POST to /api/users/:_id/exercises with form data description, duration, and optionally date. If no date is supplied, the current date will be used.
-+ The response returned from POST /api/users/:_id/exercises will be the user object with the exercise fields added.
-+ You can make a GET request to /api/users/:_id/logs to retrieve a full exercise log of any user.
-+ A request to a user's log GET /api/users/:_id/logs returns a user object with a count property representing the + number of exercises that belong to that user.
-+ A GET request to /api/users/:id/logs will return the user object with a log array of all the exercises added.
-+ Each item in the log array that is returned from GET /api/users/:id/logs is an object that should have a description, + duration, and date properties.
-+ The description property of any object in the log array that is returned from GET /api/users/:id/logs should be a + string.
-+ The duration property of any object in the log array that is returned from GET /api/users/:id/logs should be a number.
-+ The date property of any object in the log array that is returned from GET /api/users/:id/logs should be a string.. 
-+ Use the dateString format of the Date API.
-+ You can add from, to and limit parameters to a GET /api/users/:_id/logs request to retrieve part of the log of any user. from and to are dates in yyyy-mm-dd format. limit is an integer of how many logs to send back.
 
+## /api/users 
+### @POST
++ POST to /api/users with form data username, creates a new user.
++ Response from POST to /api/users with form data username will be an object with username and _id properties. e.g {"username": "tom", "_id": "mylonguniqueid"}
 
+###  @GET
++ Returns all users 
+  + in an array 
+  + as _id username pairs
+  + e.g. [{"username": "tom", "_id": "uniqueid_1"}, {"username": "scott", "_id": "uniqueid_2"}]
+
+## /api/users/:_id/exercises
+### @POST
++ POST to /api/users/:_id/exercises with form data description, duration, and optionally date
++ If no date is supplied, the current date will be used
++ Returns user object with the exercise fields added
+
+## /api/users/:_id/logs
+### @GET
++ Returns a full exercise log of user with id == _id
++ Returns a user object with
+  + a count property representing the number of exercises that belong to that user
+  + a log array of each of the exercises added (for the user with id matching id) which should have
+    + a description (string)
+    + duration (number)
+    + date (date)
+      + formatted "<shortDay> <shortMonth> <day> <year>" 
+      + e.g. Sun Feb 06 2022
+#### Additional Parameters and Filtering
++ You can add from, to and limit parameters to a GET /api/users/:_id/logs request to specify date range to return. 
++ From and to are dates in yyyy-mm-dd format. 
++ limit (integer)
+  + Maximum logs to send back
+  
+GET user's exercise log: GET /api/users/:_id/logs?[from][&to][&limit]
+[ ] = optional
+from, to = dates (yyyy-mm-dd); limit = number
