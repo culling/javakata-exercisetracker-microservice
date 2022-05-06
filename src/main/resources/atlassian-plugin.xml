@@ -30,7 +30,7 @@
         <url-pattern>/exercisetracker/api/users/*/exercises</url-pattern>
     </servlet>
 
-    <servlet key="exercisetrackerapi-logs-servlet" class="com.geneculling.javakata.servlet.ExerciseServlet">
+    <servlet key="exercisetrackerapi-logs-servlet" class="com.geneculling.javakata.servlet.LogsServlet">
         <url-pattern>/exercisetracker/api/users/*/logs</url-pattern>
     </servlet>
 
