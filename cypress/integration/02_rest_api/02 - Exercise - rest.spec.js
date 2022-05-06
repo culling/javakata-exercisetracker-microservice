@@ -16,23 +16,6 @@ const clearUsers = () => {
     });
 }
 
-const getNewUserId = (username) => {
-    const id = cy.request({
-        method: "POST",
-        url: "/plugins/servlet/exercisetracker/api/users",
-        form: true,
-        body: {
-            "username": username
-        }
-    }).then(response => {
-        const users = response.body;
-        const user = users.filter(user => user.username == username)[0];
-        const id = user._id;
-        return id;
-    });
-    return id
-}
-
 describe("canary", () => {
     it("should always be true", () => {
         expect(true).to.equal(true);
@@ -55,7 +38,7 @@ describe("/api/users/:_id/logs GET", () => {
     it(`User Story - You can make a GET request to /api/users/:_id/logs to retrieve a full exercise log of any user.`, () => { });
     it(`Should return an empty array for an existing user with no exercise logged`, () => {
         const username = "myUserOne";
-        getNewUserId(username).then(id => {
+        cy.getNewUserId(username).then(id => {
             cy.request(`/plugins/servlet/exercisetracker/api/users/${id}/logs`).then(response => {
                 const log = response.body;
                 expect(log.username, "username").to.equal(username);
@@ -69,7 +52,7 @@ describe("/api/users/:_id/logs GET", () => {
 
     it(`Should return an array with single exercise for an existing user with one exercise logged`, () => {
         const username = "myUserOne";
-        getNewUserId(username).then(id => {
+        cy.getNewUserId(username).then(id => {
             cy.request({
                 url: `/plugins/servlet/exercisetracker/api/users/${id}/exercises`,
                 method: "POST",

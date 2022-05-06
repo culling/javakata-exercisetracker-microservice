@@ -103,8 +103,7 @@ public class UserServlet extends HttpServlet {
 
         UserId userId = new UserId(username);
         DataStoreUserIDUtils.saveUserId(dataStore, USER_IDS_KEY, userId);
-        String json = dataStore.load(USER_IDS_KEY);
-
+        String json = GSON.toJson(userId);
         response.setContentType("application/json");
         Writer writer = response.getWriter();
         writer.write(json);

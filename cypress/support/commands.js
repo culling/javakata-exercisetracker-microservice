@@ -23,3 +23,20 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+
+Cypress.Commands.add("getNewUserId", (username)=>{
+    const id = cy.request({
+        method: "POST",
+        url: "/plugins/servlet/exercisetracker/api/users",
+        form: true,
+        body: {
+            "username": username
+        }
+    }).then(response => {
+        const user = response.body;
+        const id = user._id;
+        return id;
+    });
+    return id;
+});

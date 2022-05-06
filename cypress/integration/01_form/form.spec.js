@@ -1,22 +1,5 @@
 /// <reference types="cypress" />
 
-const getNewUserId = (username) => {
-    const id = cy.request({
-        method: "POST",
-        url: "/plugins/servlet/exercisetracker/api/users",
-        form: true,
-        body: {
-            "username": username
-        }
-    }).then(response => {
-        const users = response.body;
-        const user = users.filter(user => user.username == username)[0];
-        const id = user._id;
-        return id;
-    });
-    return id
-}
-
 
 describe("canary", () => {
     it("should always be true", () => {
@@ -33,7 +16,7 @@ describe("form", () => {
 
     it("should create an exercise log when submitted", () => {
         const username = "post-form-username";
-        getNewUserId(username).then(id => {
+        cy.getNewUserId(username).then(id => {
 
             cy.visit("/plugins/servlet/exercisetracker");
             cy.get('#uid').type(id);
