@@ -92,16 +92,18 @@ public class ExerciseServlet extends HttpServlet {
 
 //        TODO: Check Date Parameter and use Date parameter for logs
         String date = request.getParameter("date");
+
         UserId userId = DataStoreUserIDUtils.getUserIdById(dataStore, USER_IDS_KEY, id);
         if(userId == null){
             response.sendError(400, "User with id: \"" + id + "\" not found");
             return;
         }
+
         String username = userId.getUsername();
         Exercise exercise = new Exercise(id, username, description, duration);
         DataStoreExerciseUtils.saveExercise(dataStore, EXERCISE_KEY, exercise);
 
-        String json = dataStore.load(EXERCISE_KEY);
+        String json = GSON.toJson(exercise);
 
         response.setContentType("application/json");
         Writer writer = response.getWriter();
