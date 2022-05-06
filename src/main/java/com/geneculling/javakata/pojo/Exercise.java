@@ -20,12 +20,10 @@ public class Exercise {
     private Date date;
     private String username;
 
-    //    FIXME: Make constructor take username
     public Exercise(String id, String username, String description, String duration) {
         this(id, username, description, duration, new Date());
     }
 
-    //    FIXME: Make constructor take username
     public Exercise(String id, String username, String description, String duration, Date date) {
         this.username = username;
         this.id = id;
@@ -38,4 +36,15 @@ public class Exercise {
         return id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }
