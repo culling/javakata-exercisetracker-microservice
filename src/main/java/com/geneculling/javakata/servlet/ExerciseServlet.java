@@ -2,12 +2,12 @@ package com.geneculling.javakata.servlet;
 
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.impl.DataStoreExerciseUtils;
 import com.geneculling.javakata.impl.DataStoreFactory;
 import com.geneculling.javakata.impl.DataStoreUserIDUtils;
-import com.geneculling.javakata.impl.MemoryDataStore;
 import com.geneculling.javakata.pojo.Exercise;
 import com.geneculling.javakata.pojo.Log;
 import com.geneculling.javakata.pojo.UserId;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.List;
 
 public class ExerciseServlet extends HttpServlet {
@@ -28,19 +27,18 @@ public class ExerciseServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    private final static DataStore dataStore = new DataStoreFactory(
-            (DataStore) new MemoryDataStore(new HashMap<String, String>() {{
-        put("key", "value");
-    }})).getDataStore();
+    private static DataStore dataStore;
 
     private final static String EXERCISE_KEY = "exercises";
     private final static String USER_IDS_KEY = "userIds";
 
     ExerciseServlet(
+            @ComponentImport PluginSettingsFactory pluginSettingsFactory,
             @ComponentImport TemplateRenderer renderer,
             @ComponentImport SettingsManager settingsManager) {
         this.renderer = renderer;
         this.settingsManager = settingsManager;
+        this.dataStore = new DataStoreFactory(pluginSettingsFactory).getDataStore();
     }
 
     /**

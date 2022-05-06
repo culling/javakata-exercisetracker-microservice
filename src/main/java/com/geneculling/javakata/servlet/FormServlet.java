@@ -17,9 +17,6 @@ import java.util.Map;
 public class FormServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     TemplateRenderer renderer;
-    DataStore dataStore = new MemoryDataStore(new HashMap<String, String>(){{
-        put("key", "value");
-    }});
 
     FormServlet(
             @ComponentImport TemplateRenderer renderer,

@@ -1,49 +1,54 @@
 package com.geneculling.javakata.impl;
 
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.geneculling.javakata.api.DataStore;
-
-import javax.xml.crypto.Data;
 
 
 public class DataStoreFactory {
     private static DataStore dataStore;
-    private static DATASTORE_TYPE datastore_type = DATASTORE_TYPE.MEMORY;
+    private static DATASTORE_TYPE datastoreType = DATASTORE_TYPE.MEMORY;
+    private PluginSettingsFactory pluginSettingsFactory;
+
     public enum DATASTORE_TYPE{
         MEMORY,
         PLUGIN_SETTINGS
     }
 
-
-    public DataStoreFactory(){
-
+    /** Constructors */
+    public DataStoreFactory(PluginSettingsFactory pluginSettingsFactory){
+        this.pluginSettingsFactory = pluginSettingsFactory;
+        this.dataStore = getDataStore();
+    }
+    public DataStoreFactory(PluginSettingsFactory pluginSettingsFactory, DATASTORE_TYPE datastore_type){
+        this.pluginSettingsFactory = pluginSettingsFactory;
+        this.datastoreType = datastore_type;
+        this.dataStore = getDataStore(datastore_type);
     }
 
-    public DataStoreFactory(DataStore dataStore){
-        setDataStore(dataStore);
-    }
-
+    /** Public Methods */
     public DataStore getDataStore(){
+        return getDataStore(datastoreType);
+    }
+
+    public DataStore getDataStore(DATASTORE_TYPE datastore_type){
         if(dataStore == null){
-            dataStore = getDataStore();
+            dataStore = newDataStore(datastore_type);
         }
         return dataStore;
     }
-
-    private void setDataStore(DataStore dataStore){
-        if(this.dataStore != null){
-            return;
-        }
+    public void setDataStore(DataStore dataStore){
         this.dataStore = dataStore;
     }
 
-    private DataStore createDataStore(){
-        if(datastore_type == DATASTORE_TYPE.MEMORY){
-            return new MemoryDataStore();
+    /** Private Methods */
+    private DataStore newDataStore(DATASTORE_TYPE datastore_type){
+        switch(datastore_type){
+            case MEMORY:
+                return new MemoryDataStore();
+            case PLUGIN_SETTINGS:
+                return new PluginSettingsDataStore(pluginSettingsFactory, "com.geneculling.javakata.exercisetracker-microservice");
+            default:
+                return new MemoryDataStore();
         }
-        // TODO: ENABLE PLUGIN DATASTORE
-//        if(datastore_type == DATASTORE_TYPE.PLUGIN_SETTINGS){
-//            return new PluginSettingsDataStore();
-//        }
-        return new MemoryDataStore();
     }
 }

@@ -2,6 +2,7 @@ package com.geneculling.javakata.servlet;
 
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.geneculling.javakata.api.DataStore;
 import com.geneculling.javakata.impl.DataStoreFactory;
@@ -27,21 +28,19 @@ public class UserServlet extends HttpServlet {
     private final SettingsManager settingsManager;
     private final static Gson GSON = new Gson();
 
-    private final static DataStore dataStore = new DataStoreFactory(
-            (DataStore) new MemoryDataStore(new HashMap<String, String>() {{
-                put("key", "value");
-            }})).getDataStore();
+    private static DataStore dataStore;
 
-    private final static String USERS_KEY = "users";
     private final static String USER_IDS_KEY = "userIds";
     private final static Type USER_LIST_CLASS_TOKEN = new TypeToken<List<UserId>>(){}.getType();
 
 
     UserServlet(
+            @ComponentImport PluginSettingsFactory pluginSettingsFactory,
             @ComponentImport TemplateRenderer renderer,
             @ComponentImport SettingsManager settingsManager) {
         this.renderer = renderer;
         this.settingsManager = settingsManager;
+        this.dataStore = new DataStoreFactory(pluginSettingsFactory).getDataStore();
     }
 
     /**
@@ -83,13 +82,13 @@ public class UserServlet extends HttpServlet {
 
     /**
      * Post method
-     * <p>
+     *
      * User Stories
      * + You can POST to /api/users with form data username to create a new user.
-     * + The returned response from POST /api/users with form data username will be an object with username and _id properties.
-     * <p>
-     * + You can POST to /api/users/:_id/exercises with form data description, duration, and optionally date. If no date is + supplied, the current date will be used.
-     * + The response returned from POST /api/users/:_id/exercises will be the user object with the exercise fields added.
+     * + The returned response from POST /api/users with form data username will be an object with
+     *      + username
+     *      + _id
+     *
      *
      * @param request
      * @param response

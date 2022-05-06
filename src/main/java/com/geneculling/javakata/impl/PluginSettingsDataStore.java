@@ -23,6 +23,7 @@ public class PluginSettingsDataStore implements DataStore {
 
     public PluginSettingsDataStore(PluginSettingsFactory pluginSettingsFactory, String prefix){
         this.pluginSettings = pluginSettingsFactory.createGlobalSettings();
+        this.prefix = prefix;
     }
 
     @Override
